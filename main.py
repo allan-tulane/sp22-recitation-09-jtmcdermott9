@@ -59,13 +59,32 @@ def test_shortest_shortest_path():
     
     
 def bfs_path(graph, source):
-    """
+  """
     Returns:
       a dict where each key is a vertex and the value is the parent of 
       that vertex in the shortest path tree.
     """
-    ###TODO
-    pass
+  ###TODO
+  def bfs_helper(visited, frontier, parent):
+    if len(frontier) == 0:
+      return parent
+    else:
+      node = frontier.popleft()
+      visited.add(node)
+      
+      # neighbors = graph[node]
+      for i in graph[node]:
+        if i not in visited and i not in frontier:
+          frontier.append(i)
+          parent[i] = node
+      # frontier.extend(filter(lambda n: n not in visited, graph[node]))
+      return bfs_helper(visited, frontier, parent)
+  frontier = deque()
+  frontier.append(source)
+  visited = set()
+  parent = dict()
+  return bfs_helper(visited, frontier, parent)
+    
 
 def get_sample_graph():
      return {'s': {'a', 'b'},
@@ -75,6 +94,10 @@ def get_sample_graph():
             'd': {}
             }
 
+
+graph = get_sample_graph()
+parents = bfs_path(graph, 's')
+print(parents)
 def test_bfs_path():
     graph = get_sample_graph()
     parents = bfs_path(graph, 's')
@@ -82,27 +105,30 @@ def test_bfs_path():
     assert parents['b'] == 's'    
     assert parents['c'] == 'b'
     assert parents['d'] == 'c'
-    
-def get_path(parents, destination):
-    """
-    Returns:
-      The shortest path from the source node to this destination node 
-      (excluding the destination node itself). See test_get_path for an example.
-    """
-    ###TODO
-    pass
 
-def test_get_path():
-    graph = get_sample_graph()
-    parents = bfs_path(graph, 's')
-    assert get_path(parents, 'd') == 'sbc'
-graph = {
-              's': {('a', 1), ('c', 4)},
-              'a': {('b', 2)}, # 'a': {'b'},
-              'b': {('c', 1), ('d', 4)}, 
-              'c': {('d', 3)},
-              'd': {},
-              'e': {('d', 0)}
-            }
-print(shortest_shortest_path(graph, 's'))
-print(test_shortest_shortest_path())
+print(test_bfs_path())
+    
+# def get_path(parents, destination):
+#     """
+#     Returns:
+#       The shortest path from the source node to this destination node 
+#       (excluding the destination node itself). See test_get_path for an example.
+#     """
+#     ###TODO
+#     pass
+
+# def test_get_path():
+#     graph = get_sample_graph()
+#     parents = bfs_path(graph, 's')
+#     assert get_path(parents, 'd') == 'sbc'
+# graph = {
+#               's': {('a', 1), ('c', 4)},
+#               'a': {('b', 2)}, # 'a': {'b'},
+#               'b': {('c', 1), ('d', 4)}, 
+#               'c': {('d', 3)},
+#               'd': {},
+#               'e': {('d', 0)}
+#             }
+# #print(shortest_shortest_path(graph, 's'))
+# #print(test_shortest_shortest_path())
+# print(bfs_path(graph, 's'))
