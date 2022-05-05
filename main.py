@@ -98,6 +98,7 @@ def get_sample_graph():
 graph = get_sample_graph()
 parents = bfs_path(graph, 's')
 print(parents)
+
 def test_bfs_path():
     graph = get_sample_graph()
     parents = bfs_path(graph, 's')
@@ -106,29 +107,37 @@ def test_bfs_path():
     assert parents['c'] == 'b'
     assert parents['d'] == 'c'
 
-print(test_bfs_path())
-    
-# def get_path(parents, destination):
-#     """
-#     Returns:
-#       The shortest path from the source node to this destination node 
-#       (excluding the destination node itself). See test_get_path for an example.
-#     """
-#     ###TODO
-#     pass
 
-# def test_get_path():
-#     graph = get_sample_graph()
-#     parents = bfs_path(graph, 's')
-#     assert get_path(parents, 'd') == 'sbc'
-# graph = {
-#               's': {('a', 1), ('c', 4)},
-#               'a': {('b', 2)}, # 'a': {'b'},
-#               'b': {('c', 1), ('d', 4)}, 
-#               'c': {('d', 3)},
-#               'd': {},
-#               'e': {('d', 0)}
-#             }
-# #print(shortest_shortest_path(graph, 's'))
-# #print(test_shortest_shortest_path())
-# print(bfs_path(graph, 's'))
+    
+def get_path(parents, destination):
+  """
+     Returns:
+       The shortest path from the source node to this destination node 
+       (excluding the destination node itself). See test_get_path for an example.
+     """
+  ###TODO
+  
+  
+  parent = parents[destination]
+  path = parent + ''
+  get_path(parents, parent)
+
+
+
+
+  return path
+print(get_path(parents, 'd'))
+
+def test_get_path():
+    graph = get_sample_graph()
+    parents = bfs_path(graph, 's')
+    assert get_path(parents, 'd') == 'sbc'
+graph = {
+              's': {('a', 1), ('c', 4)},
+              'a': {('b', 2)}, # 'a': {'b'},
+              'b': {('c', 1), ('d', 4)}, 
+              'c': {('d', 3)},
+              'd': {},
+              'e': {('d', 0)}
+            }
+
