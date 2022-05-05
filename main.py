@@ -1,8 +1,9 @@
 from collections import deque
-from heapq import heappush, heappop 
+from heapq import heappush, heappop
+
 
 def shortest_shortest_path(graph, source):
-    """
+  """
     Params: 
       graph.....a graph represented as a dict where each key is a vertex
                 and the value is a set of (vertex, weight) tuples (as in the test case)
@@ -12,8 +13,31 @@ def shortest_shortest_path(graph, source):
       a dict where each key is a vertex and the value is a tuple of
       (shortest path weight, shortest path number of edges). See test case for example.
     """
-    ### TODO
-    pass
+  ### TODO
+  def helper(visited, frontier):
+    if len(frontier) == 0:
+      return visited
+
+    else:
+      distance, edges, node = heappop(frontier)
+      if node in visited:
+        return helper(visited, frontier)
+
+      else:
+        visited[node] = (distance, edges)
+
+        for neighbor, weight in graph[node]:
+          heappush(frontier, (distance+weight, edges+1, neighbor))
+        return helper(visited, frontier)
+
+  frontier = []
+  heappush(frontier,(0, 0, source))
+  visited = dict()
+  return helper(visited, frontier)
+          
+
+
+  
     
 def test_shortest_shortest_path():
 
@@ -72,3 +96,13 @@ def test_get_path():
     graph = get_sample_graph()
     parents = bfs_path(graph, 's')
     assert get_path(parents, 'd') == 'sbc'
+graph = {
+              's': {('a', 1), ('c', 4)},
+              'a': {('b', 2)}, # 'a': {'b'},
+              'b': {('c', 1), ('d', 4)}, 
+              'c': {('d', 3)},
+              'd': {},
+              'e': {('d', 0)}
+            }
+print(shortest_shortest_path(graph, 's'))
+print(test_shortest_shortest_path())
