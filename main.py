@@ -116,22 +116,46 @@ def get_path(parents, destination):
        (excluding the destination node itself). See test_get_path for an example.
      """
   ###TODO
+  path = '' 
+  def get_path_helper(parents, destination, path):
+      if destination in parents:
+          destination = parents[destination]
+          return get_path_helper(parents, destination, destination+path)
+      else:
+          return path
+  return get_path_helper(parents, destination, path)
+        
+    
+  #   if len(frontier) == 0:
+  #     return path
+  #   else:
+  #     node = frontier.popleft()
+  #     parent = parents[node]
+  #     visited.add(node)
+      
+      
+  #     path = parent 
+  #     print(path)
+  #     for i in parents:
+  #       if i not in visited and i not in frontier:
+  #         frontier.append(i)
+  #         #path = parent 
+  #     return get_path_helper(visited, frontier)
+
+  # return get_path_helper(visited, frontier)
+
   
-  
-  parent = parents[destination]
-  path = parent + ''
-  get_path(parents, parent)
 
 
-
-
-  return path
+    
 print(get_path(parents, 'd'))
 
 def test_get_path():
     graph = get_sample_graph()
     parents = bfs_path(graph, 's')
     assert get_path(parents, 'd') == 'sbc'
+
+  
 graph = {
               's': {('a', 1), ('c', 4)},
               'a': {('b', 2)}, # 'a': {'b'},
